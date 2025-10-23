@@ -1,8 +1,6 @@
 package main
 
-import (
-	"strings"
-)
+import "strings"
 
 func cleanInput(text string) []string {
 	output := make([]string, 0)
