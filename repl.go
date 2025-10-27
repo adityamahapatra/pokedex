@@ -40,6 +40,21 @@ func commandMap() error {
 	return nil
 }
 
+func commandMapBack() error {
+	if conf.Offset < 20 {
+		fmt.Println("you're on the first page")
+		return nil
+	}
+	fmt.Println(conf.Offset)
+	conf.Offset -= 40
+	fmt.Println(conf.Offset)
+	for _, area := range pokedexapi.LocationAreas(&conf) {
+		fmt.Println(area)
+	}
+
+	return nil
+}
+
 var commandMapping = map[string]cliCommand{
 	"exit": {
 		name:        "exit",
@@ -55,6 +70,11 @@ var commandMapping = map[string]cliCommand{
 		name:        "map",
 		description: "Get 20 location areas",
 		callback:    commandMap,
+	},
+	"mapb": {
+		name:        "mapb",
+		description: "Get the previous 20 location areas",
+		callback:    commandMapBack,
 	},
 }
 
