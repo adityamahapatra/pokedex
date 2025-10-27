@@ -5,54 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/adityamahapatra/pokedex/internal/pokedexapi"
 )
 
 type cliCommand struct {
 	name        string
 	description string
 	callback    func() error
-}
-
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	message := "Welcome to the Pokedex!\nUsage:\n\nhelp: Displays a help message\nexit: Exit the Pokedex\n"
-	fmt.Println(message)
-	return nil
-}
-
-var conf = pokedexapi.Config{
-	Offset: 0,
-	Limit:  20,
-}
-
-func commandMap() error {
-	for _, area := range pokedexapi.LocationAreas(&conf) {
-		fmt.Println(area)
-	}
-	conf.Offset += 20
-	return nil
-}
-
-func commandMapBack() error {
-	if conf.Offset < 20 {
-		fmt.Println("you're on the first page")
-		return nil
-	}
-	fmt.Println(conf.Offset)
-	conf.Offset -= 40
-	fmt.Println(conf.Offset)
-	for _, area := range pokedexapi.LocationAreas(&conf) {
-		fmt.Println(area)
-	}
-
-	return nil
 }
 
 var commandMapping = map[string]cliCommand{
