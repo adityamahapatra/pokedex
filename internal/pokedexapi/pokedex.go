@@ -26,7 +26,7 @@ type Config struct {
 func LocationAreas(conf *Config) []string {
 	var areas []string
 
-	url := fmt.Sprintf("https://pokeapi.co/api/v2/location-area?offset=%d&limit=%d", conf.Offset, conf.Limit)
+	url := fmt.Sprintf("%s/location-area?offset=%d&limit=%d", baseURL, conf.Offset, conf.Limit)
 	request, err := http.Get(url)
 
 	if err != nil {
