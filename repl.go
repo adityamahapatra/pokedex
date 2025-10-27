@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/adityamahapatra/pokedex/internal/pokedexapi"
 )
 
 type cliCommand struct {
@@ -25,7 +27,20 @@ func commandHelp() error {
 	return nil
 }
 
-var commandMap = map[string]cliCommand{
+var conf = pokedexapi.Config{
+	Offset: 0,
+	Limit:  20,
+}
+
+func commandMap() error {
+	for _, area := range pokedexapi.LocationAreas(&conf) {
+		fmt.Println(area)
+	}
+	conf.Offset += 20
+	return nil
+}
+
+var commandMapping = map[string]cliCommand{
 	"exit": {
 		name:        "exit",
 		description: "Exit the Pokedex",
@@ -36,12 +51,19 @@ var commandMap = map[string]cliCommand{
 		description: "Displays a help message",
 		callback:    commandHelp,
 	},
+	"map": {
+		name:        "map",
+		description: "Get 20 location areas",
+		callback:    commandMap,
+	},
 }
 
 func PokedexPrompt() {
+	const prompt = "Pokedex > "
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
+		fmt.Print(prompt)
 		if scanner.Scan() {
 			input := scanner.Text()
 
@@ -55,7 +77,7 @@ func PokedexPrompt() {
 				continue
 			}
 
-			command, ok := commandMap[output[0]]
+			command, ok := commandMapping[output[0]]
 			if !ok {
 				fmt.Println("Unknown command")
 				continue
